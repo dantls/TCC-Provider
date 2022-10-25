@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useState, useContext, useEffect } from 'react';
+import { Alert } from 'react-native';
 import api from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -44,7 +45,7 @@ const AuthProvider: React.FC = ({ children }) => {
           // token,
           user] = await AsyncStorage.multiGet([
             //'@Work:token',
-            '@Work:user']);
+            '@Work:provider']);
 
         if (//token[1] && 
           user[1]) {
@@ -58,33 +59,39 @@ const AuthProvider: React.FC = ({ children }) => {
   },[])
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('/provider/login/',JSON.stringify( {
-      email,
-      password,
-    }),{
-      headers: {
-          'Content-Type': 'application/json',
-      }
-  });
+    try{
+      const response = await api.post('/provider/login/',JSON.stringify( {
+        email,
+        password,
+      }),{
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      });
+      const user = response.data;
 
-    const user = response.data;
+      await AsyncStorage.multiSet([
+        // ['@Work:token', token],
+        ['@Work:provider', JSON.stringify(user)]
+      ])
+  
+      // api.defaults.headers.authorization = `Bearer ${token}`;
+  
+      setData({ 
+       // token, 
+        user });
+    }catch(error){
+      Alert.alert('Usuário/Senha incorretos.');
+    }
+    
 
-    await AsyncStorage.multiSet([
-      // ['@Work:token', token],
-      ['@Work:user', JSON.stringify(user)]
-    ])
-
-    // api.defaults.headers.authorization = `Bearer ${token}`;
-
-    setData({ 
-     // token, 
-      user });
+  
   }, []);
 
   const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove([
       // 'Work:token',
-      'Work:user'
+      'Work:provider'
     ]);
 
     setData({} as AuthState);
@@ -92,7 +99,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const updateUser = useCallback(
     (user: User) => {
-      localStorage.setItem('@Work:user', JSON.stringify(user));
+      localStorage.setItem('@Work:provider', JSON.stringify(user));
       setData({
         //token: data.token,
         user,

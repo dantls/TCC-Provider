@@ -47,7 +47,16 @@ export function Schedules({ navigation }){
   const theme = useTheme();
   const {user} = useAuth(); 
   const [markedDate, setMarketDate] = useState<MarkedDateProps>({}as MarkedDateProps);
-  const [selectedDate, setSelectedDate] = useState<DateData>(new Date());
+  const [selectedDate, setSelectedDate] = useState<DateData>(()=> {
+    const data = new Date();
+    return({
+      year: data.getFullYear(),
+      month: data.getMonth(),
+      day: data.getDate(),
+      timestamp: data.getTime(),
+      dateString:`${String(data.getDate()).padStart(2,'0')}-${String(data.getMonth()+1).padStart(2,'0')}-${data.getFullYear()}`
+    })
+  });
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -64,10 +73,10 @@ export function Schedules({ navigation }){
       idprovider: String(user.id),
       date: `${String(date.day).padStart(2,'0')}-${String(date.month).padStart(2,'0')}-${date.year}`,
     }); 
-    console.log({
-      idprovider: String(user.id),
-      date: `${String(date.day).padStart(2,'0')}-${String(date.month).padStart(2,'0')}-${date.year}`
-    });
+      // console.log({
+      //   idprovider: String(user.id),
+      //   date: `${String(date.day).padStart(2,'0')}-${String(date.month).padStart(2,'0')}-${date.year}`
+      // });
     const {service} = responseServices.data;
 
     setServices(service);
@@ -128,11 +137,16 @@ export function Schedules({ navigation }){
 
   useEffect(() => {
     loadData();
-  },[])
+  },[]);
+
+  const handleNavigateBack = () => {
+   navigation.goBack();
+  }
 
   return(
     <Container>
-       <BackButton 
+      <BackButton 
+        onPress={handleNavigateBack}
         color="#fff"
       />
       {/* <KeyboardAvoidingView

@@ -1,4 +1,5 @@
 import React, {useState} from 'react'; 
+import {Alert} from 'react-native';
 import { Input } from '@components/Input';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/auth';
@@ -28,7 +29,11 @@ export function SignIn(){
   const [password,setPassword]  = useState('');
 
   function handleRegister(){
-    signIn({email, password});
+    try{
+      signIn({email, password});
+    }catch(error){
+      Alert.alert('Usuário/Senha incorretos.');
+    }
   }
 
   return(

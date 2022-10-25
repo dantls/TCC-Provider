@@ -8,8 +8,6 @@ import {Home} from '@screens/Home';
 import {Profile} from '@screens/Profile';
 import {Schedules} from '@screens/Schedules';
 
-
-
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export function TabsRoutes(){
@@ -41,7 +39,7 @@ export function TabsRoutes(){
         ))
       }}
     />
-    <Screen
+    {/* <Screen
       name="Agenda"
       component={Schedules}
       options={{
@@ -53,7 +51,7 @@ export function TabsRoutes(){
           />
         ))
       }}
-    />
+    /> */}
    
     <Screen
       name="Serviços"
