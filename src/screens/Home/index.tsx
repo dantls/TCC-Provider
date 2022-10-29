@@ -1,7 +1,7 @@
 import { Header } from '@src/components/Header/Index';
 import { useAuth } from '@src/hooks/auth';
 import React,{useEffect, useState} from 'react'; 
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform ,RefreshControl} from 'react-native';
 import api from '../../services/api';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -34,6 +34,15 @@ export function Home({ navigation }){
   const { user } = useAuth();
 
   const [services, setServices] = useState<Service[]>([]);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setServices([]);
+    loadData();
+  };
+  
   async function loadData(){
 
     const responseServices = await api.post("service/getservicebyprovider/", {idprovider: String(user.id)}); 
@@ -41,7 +50,9 @@ export function Home({ navigation }){
     const {service} = responseServices.data;
 
     setServices(service);
- 
+
+    setRefreshing(false);
+
   }
 
   useEffect(() => {
@@ -59,6 +70,12 @@ export function Home({ navigation }){
                   keyExtractor={service => String(service.id)}
                   ListHeaderComponent={
                     <ServicesListTitle>Serviços do dia</ServicesListTitle>
+                  }
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
                   }
                   renderItem={({ item: service }) => (
                     <ServicesContainer
