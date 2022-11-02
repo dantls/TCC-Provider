@@ -5,7 +5,7 @@ const { Navigator, Screen } = createStackNavigator();
 import {TabsRoutes} from './tabs.routes';
 import { Dashboard } from '../screens/Dashboard';
 // import { Home } from '../screens/Home';
-import { Appointments } from '../screens/Appointments';
+import { AppointmentDetail } from '../screens/AppointmentDetail';
 import { ProviderDetail } from '../screens/ProviderDetail';
 import { AppointmentsCreated } from '../screens/AppointmentsCreated';
 import { SplashScreen } from '../screens/SplashScreen';
@@ -35,8 +35,8 @@ export function AppRoutes(){
           component={ProviderDetail}
         />
         <Screen
-          name="Appointments"
-          component={Appointments}
+          name="AppointmentDetail"
+          component={AppointmentDetail}
         />
         <Screen
           name="AppointmentsCreated"

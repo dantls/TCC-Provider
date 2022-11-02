@@ -31,16 +31,18 @@ import {
 } from './styles';
 import api from '@src/services/api';
 import Icon from 'react-native-vector-icons/Feather';
-import { Animated } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { Animated } from 'react-native';
 
 export interface Service {
   id: number;
+  iduser:string;
   idprovider: string;
   localservice: string;
   dateservice: string;
   timeservice: string;
   typeservice: string;
+  description: string;
 }
 
 export function Schedules({ navigation }){
@@ -73,10 +75,7 @@ export function Schedules({ navigation }){
       idprovider: String(user.id),
       date: `${String(date.day).padStart(2,'0')}-${String(date.month).padStart(2,'0')}-${date.year}`,
     }); 
-      // console.log({
-      //   idprovider: String(user.id),
-      //   date: `${String(date.day).padStart(2,'0')}-${String(date.month).padStart(2,'0')}-${date.year}`
-      // });
+
     const {service} = responseServices.data;
 
     setServices(service);
@@ -143,6 +142,10 @@ export function Schedules({ navigation }){
    navigation.goBack();
   }
 
+  const navigateToDetail = (idprovider:string,idservice:string) => {
+      navigation.navigate('AppointmentDetail',{idprovider,idservice});
+   }
+
   return(
     <Container>
       <BackButton 
@@ -204,10 +207,10 @@ export function Schedules({ navigation }){
                 )}
               >
                 <ServicesContainer
-                  onPress={() => navigateToDetail(provider.id)}
+                  onPress={() => navigateToDetail(service.idprovider, service.id)}
                 >
                   <ServicesInfo>
-                    <ServicesName>{service.idprovider}</ServicesName> 
+                    <ServicesName>{service.iduser}</ServicesName> 
                     <ServicesMeta>
                       {/* <Icon name="phone" size={14} color="#FF9000" /> */}
                       <ServicesText>{service.typeservice}</ServicesText>

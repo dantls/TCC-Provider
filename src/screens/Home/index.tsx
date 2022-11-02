@@ -22,6 +22,7 @@ import {
 
 export interface Service {
   id: number;
+  iduser: string;
   idprovider: string;
   localservice: string;
   dateservice: string;
@@ -82,6 +83,7 @@ export function Home({ navigation }){
                         // onPress={() => navigateToCreateAppointment(provider.id)}
                       >
                         <ServicesInfo>
+                          <ServicesName>{service.iduser}</ServicesName> 
                           <ServicesName>{service.typeservice}</ServicesName> 
                           <ServicesMeta>
                           </ServicesMeta>       

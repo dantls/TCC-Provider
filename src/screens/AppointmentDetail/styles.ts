@@ -145,3 +145,43 @@ export const CreateAppointmentButtonText = styled.Text`
   font-size: 16px;
   color: #232129;
 `;
+
+export const ServicesMeta = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+export const ServicesTime = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+export const ServicesTimeContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 26px;
+`;
+export const ServicesName = styled.Text`
+  font-family: ${({theme}) => theme.FONTS.MEDIUM};
+  font-size: 18px;
+  color: #f4ede8;
+`;
+
+export const ServicesMetaText = styled.Text`
+  color: #999591;
+  margin-left: 8px;
+  margin-right: 8px;
+  font-family: ${({theme}) => theme.FONTS.TEXT};
+  font-size: 18px;
+`;
+
+export const ServicesText = styled.Text`
+  color: #999591;
+  /* margin-left: 8px; */
+  margin-right: 8px;
+  font-family: ${({theme}) => theme.FONTS.TEXT};
+  font-size: 32px;
+`;
+
