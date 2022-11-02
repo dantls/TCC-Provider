@@ -9,9 +9,7 @@ interface User {
   email:string;
   phone:string;
   photo: string;
-  street:string;
-  district:string;
-  city: string;
+  address?:string;
 }
 
 interface SignInCredentials {

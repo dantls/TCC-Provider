@@ -1,6 +1,7 @@
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import { useNavigation } from '@react-navigation/native';
+import { BackButton } from '@src/components/BackButton';
 import React, { useState } from 'react'; 
 
 import { KeyboardAvoidingView, Platform } from 'react-native';
@@ -17,6 +18,8 @@ export function User(){
   const [email,setEmail]  = useState('');
   const [password,setPassword]  = useState('');
   const [confirmPassword,setConfirmPassword]  = useState('');
+
+  
 
   function handleRegister(){
     const data = {
@@ -47,9 +50,19 @@ export function User(){
       })
   }
 
+  const handleGoBack = useCallback(() => {
+    navigate.goBack();
+  },[])
+
   return(
     <Container>
        <KeyboardAvoidingView>
+
+       <BackButton 
+        onPress={handleGoBack}
+        color="#fff"
+      />
+
           <Content>
             <Title>Cadastro de Usuário</Title>
 

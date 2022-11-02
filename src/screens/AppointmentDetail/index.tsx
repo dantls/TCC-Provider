@@ -1,25 +1,10 @@
-import React, { useMemo, useState,useCallback, useEffect } from 'react';
-// import DateTimePicker from '@react-native-community/datetimepicker'
-import {Platform, Alert, Text} from 'react-native';
+import React, { useState,useEffect } from 'react';
 import {StatusBar} from 'expo-status-bar';
 import Icon from 'react-native-vector-icons/Feather';
-import { Feather } from '@expo/vector-icons';
-import { format } from 'date-fns';
 import {
   Container,
   Content,
-  ProvidersListContainer,
-  ProvidersList,
-  // Calendar,
-  CalendarTitle,
-  OpenDatePickerButton,
-  OpenDatePickerText,
-  Schedule,
-  Section,
-  SectionContent,
   SectionTitle,
-  ServicesMeta,
-  ServicesText,
   ServicesTime,
   ServicesTimeContainer,
   ServicesMetaText,
@@ -38,7 +23,7 @@ interface RouteParams {
 
 export function AppointmentDetail(){
   const route = useRoute();
-  const {goBack, navigate} = useNavigation();
+  const {goBack} = useNavigation();
 
   const routeParams = route.params as RouteParams;
   const [service, setService] = useState<Service>({} as Service);

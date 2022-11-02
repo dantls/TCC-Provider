@@ -26,45 +26,12 @@ export function Profile(){
     navigation.goBack();
   },[])
 
-  // useEffect(() => {
-  //   fetch("https://api-flash-services.herokuapp.com/src/Routes/user/read/", {
-  //         method: "POST",
-  //         headers: {
-  //           'Accept': 'application/json',
-  //             'Content-Type': 'application/json'
-  //         },
-  //           body: JSON.stringify({
-  //               "id": user.id
-  //           })
-  //         })
-  //         .then(response => response.json())
-  //         .then(data => {
-  //             const {user} = data;
-  //             setName(user.name);
-  //             setEmail(user.email);
-  //             setPhone(user.phone);
-  //             setStreet(user.street);
-  //             setDistrict(user.district);
-  //             setCity(user.city);
-
-  //             console.log(data)
-  //         })
-  //         .catch(err => {
-  //             console.log("Error occurred: " + err);
-  //         })
-
-  // },[])
-
-
   function handleRegister(){
     const data = {
       id: user.id,
       name,
       email,
-      phone,
-      street,
-      district,
-      city
+      phone
     }
     fetch("https://api-flash-services.herokuapp.com/src/Routes/user/update/", {
       method: "POST",
@@ -76,10 +43,7 @@ export function Profile(){
             "id": data.id,
             "name": data.name,
             "email": data.email,
-            "phone": data.phone,
-            "street": data.street,
-            "district": data.district,
-            "city": data.city
+            "phone": data.phone
         })
       })
       .then(()=>{
@@ -88,16 +52,12 @@ export function Profile(){
       .catch(err => {
           console.log("Error occurred: " + err);
       })
-    console.log(data)
 
   }
 
   const [name,setName]  = useState('');
   const [email,setEmail]  = useState('');
   const [phone,setPhone]  = useState('');
-  const [street,setStreet]  = useState('');
-  const [district,setDistrict]  = useState('');
-  const [city,setCity]  = useState('');
 
 
   return(
@@ -140,33 +100,7 @@ export function Profile(){
              autoCapitalize = "none"
              onChangeText={setPhone}
             />
-            <Input 
-              placeholder="Rua"
-              type="secondary"
-              value = {user.street}
-              autoCorrect = {false}
-              autoCapitalize = "none"
-              onChangeText={setStreet}
-            />
-         
-            <Input 
-              placeholder="Bairro"
-              type="secondary"
-              value = {user.district}
-              autoCorrect = {false}
-              autoCapitalize = "none"
-              onChangeText={setDistrict}
-            />
           
-            <Input 
-              placeholder="Cidade"
-              type="secondary"
-              value = {user.city}
-              autoCorrect = {false}
-              autoCapitalize = "none"
-              onChangeText={setCity}
-            />
-            
            
            
             <Button 
