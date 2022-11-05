@@ -29,7 +29,7 @@ export const Content = styled.View`
 
 export const Title = styled.Text`
   font-size: 32px;
-  margin: 26px 0 0;
+  margin: 12px 0 0;
   align-self: center;
 
   ${({theme})=> css`
