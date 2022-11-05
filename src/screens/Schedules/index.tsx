@@ -1,24 +1,25 @@
-import React, { useCallback, useEffect,useState } from 'react'; 
+import React, { useCallback, useEffect,useState , useRef} from 'react'; 
 import { Calendar,  DateData, MarkedDateProps } from '@src/components/Calendar';
 import { generateMarked } from '@src/components/Calendar/generateMarked';
-import { Alert, KeyboardAvoidingView, Platform ,View} from 'react-native';
+import { Alert, View} from 'react-native';
 import { BackButton } from '@src/components/BackButton';
+import { TextArea } from '@src/components/TextArea';
+import { Button } from '@src/components/Button';
+import { TextInputValue } from '@src/components/TextInputValue';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useAuth } from '@hooks/auth';
 import {useTheme} from 'styled-components/native';
+import { Modalize } from 'react-native-modalize';
 import {
   Container,
   RemoveButton,
-
+  SectionTitle,
   CalendarContainer,
   CalendarTitle,
   OpenDatePickerButton,
   OpenDatePickerText,
-
-
   ServicesList,
   ServicesContainer,
-  ServicesAvatar,
   ServicesTimeContainer,
   ServicesInfo,
   ServicesName,
@@ -31,7 +32,7 @@ import {
 } from './styles';
 import api from '@src/services/api';
 import Icon from 'react-native-vector-icons/Feather';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Animated } from 'react-native';
 
 export interface Service {
@@ -46,6 +47,7 @@ export interface Service {
 }
 
 export function Schedules({ navigation }){
+  const modalizeRef = useRef<Modalize>(null);
   const theme = useTheme();
   const {user} = useAuth(); 
   const [markedDate, setMarketDate] = useState<MarkedDateProps>({}as MarkedDateProps);
@@ -59,9 +61,12 @@ export function Schedules({ navigation }){
       dateString:`${String(data.getDate()).padStart(2,'0')}-${String(data.getMonth()+1).padStart(2,'0')}-${data.getFullYear()}`
     })
   });
-
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+
+  const [serviceValue, setServiceValue] = useState('');
+  const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
+  const [serviceDescription, setServiceDescription] = useState('');
   const [services, setServices] = useState<Service[]>([]);
 
   const handleToggleDatePicker = () => {
@@ -88,40 +93,6 @@ export function Schedules({ navigation }){
   },[selectedDate])
 
 
-
-  // useCallconst handleChangeDate = (date:DateData)=>{
-  //   setSelectedDate(date)
-  //   setMarketDate(generateMarked(date))
-  //   const responseServices = await api.post("/service/getserviceprovider/", {
-  //     idprovider: String(user.id)
-  //   }); 
-
-  //   const {service} = responseServices.data;
-
-  //   setServices(service);
-  // }
-
-  async function handleRemove(service :Service) {
-    Alert.alert('Remover',`Deseja remover a ${service.idprovider}?`,[
-      {
-        text: 'Não',
-        style: 'cancel'
-      },
-      {
-        text: 'Sim',
-        onPress: async ()=>{
-          try {
-            const responseServices = await api.post("/service/delete/", {id: String(service.id)}); 
-            setServices(oldData => oldData.filter(item => item.id !== service.id))
-          }
-          catch(error){
-            Alert.alert('Não foi possível remover')
-          }
-        }
-      }
-    ])
-  }
- 
   async function loadData(){
 
     const responseServices = await api.post("/service/getserviceprovider/", {
@@ -139,12 +110,73 @@ export function Schedules({ navigation }){
   },[]);
 
   const handleNavigateBack = () => {
-   navigation.goBack();
+    navigation.goBack();
+  }
+  const handleCloseModal = () => {
+    modalizeRef.current?.close();
+    setServiceSelected({});
+    setServiceValue('');
+    setServiceDescription('');
   }
 
-  const navigateToDetail = (idprovider:string,idservice:string) => {
+  const navigateToDetail = (idprovider:string, idservice:string) => {
       navigation.navigate('AppointmentDetail',{idprovider,idservice});
-   }
+  }
+
+  const handleOpenModal = (service:Service) => {
+    setServiceSelected(service);
+    modalizeRef.current?.open();
+  }
+
+  const handleRemoveService = () => {
+    Alert.alert('Remover',`Deseja remover a ${serviceSelected?.idprovider}?`,[
+      {
+        text: 'Não',
+        style: 'cancel'
+      },
+      {
+        text: 'Sim',
+        onPress: async ()=>{
+          try {
+            const responseServices = await api.post("/service/delete/", {id: String(serviceSelected?.id)}); 
+            setServices(oldData => oldData.filter(item => item.id !== serviceSelected?.id));
+            handleCloseModal();
+          }
+          catch(error){
+            Alert.alert('Não foi possível remover')
+          }
+        }
+      }
+    ])
+  }
+  const handleCloseService = () => {
+    Alert.alert('Finalizar',`Deseja finalizar o serviço ${serviceSelected?.idprovider}?`,[
+      {
+        text: 'Não',
+        style: 'cancel'
+      },
+      {
+        text: 'Sim',
+        onPress: async ()=>{
+          try {
+            const responseServices = await api.post("/service/close/", {
+              id: String(serviceSelected.id),
+              value: serviceValue,
+              description: serviceDescription
+            }); 
+            setServices(oldData => oldData.filter(item => item.id !== serviceSelected.id));
+            handleCloseModal();
+          }
+          catch(error){
+            Alert.alert('Não foi possível remover')
+          }
+        }
+      }
+    ])
+  }
+
+
+  
 
   return(
     <Container>
@@ -152,9 +184,6 @@ export function Schedules({ navigation }){
         onPress={handleNavigateBack}
         color="#fff"
       />
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding': undefined}
-      > */}
 
     <CalendarContainer>
         <CalendarTitle>Escolha a data</CalendarTitle>
@@ -174,13 +203,7 @@ export function Schedules({ navigation }){
           )        
         }
       </CalendarContainer>
-      {/* {showCalendar && (
-         <Calendar
-         markedDates={markedDate}
-         onDayPress={handleChangeDate}
-         />
-      ) } */}
-        
+
          <ServicesList
             data={services}
             keyExtractor={service => String(service.id)}
@@ -194,10 +217,10 @@ export function Schedules({ navigation }){
                   <Animated.View>
                     <View>
                         <RemoveButton
-                          onPress={() => handleRemove(service)}
+                          onPress={() => handleOpenModal(service)}
                         >
-                          <Feather 
-                            name="trash"
+                          <EvilIcons 
+                            name="gear"
                             size={32}
                             color= {theme.COLORS.SHAPE}
                           />
@@ -236,8 +259,65 @@ export function Schedules({ navigation }){
             )}
           />
       
-        
-      {/* </KeyboardAvoidingView> */}
+        <Modalize
+          ref={modalizeRef}
+          snapPoint={600}
+        >
+           
+          <View
+            style={{
+              flex:1,
+              height:600,
+              backgroundColor: '#312E38',
+              paddingTop: 40
+            }}
+          >
+
+            <SectionTitle>Valor do serviço</SectionTitle>
+            <TextInputValue
+              autoCorrect={false}
+              onChangeText={setServiceValue}
+              value={String(serviceValue)}
+            />
+            <SectionTitle>Descrição do serviço</SectionTitle>
+            
+            <TextArea
+              multiline
+              maxLength={100}
+              numberOfLines={5}
+              autoCorrect={false}
+              onChangeText={setServiceDescription}
+              value={serviceDescription}
+            />
+
+            <View
+              style={{
+                flexDirection: 'column',
+                padding: 24,
+                marginBottom: 24
+              }}
+            >
+              <Button
+                title="Finalizar serviço"
+                onPress={handleCloseService}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                padding: 24,
+                marginBottom: 24
+              }}
+            >
+              <Button
+                title="Cancelar serviço"
+                type="secondary"
+                onPress={handleRemoveService}
+              />
+            </View>
+          </View>
+          
+        </Modalize>
     </Container>
   )
 }

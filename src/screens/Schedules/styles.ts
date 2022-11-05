@@ -33,6 +33,15 @@ export const CalendarTitle = styled.Text`
     color: ${theme.COLORS.TITLE}
   `};
 `;
+
+export const SectionTitle = styled.Text`
+  font-size: 18px;
+  color: #999591;
+  ${({theme})=> css`
+    font-family: ${theme.FONTS.TEXT};
+  `};
+  margin: 0 24px 12px;
+`;
 export const OpenDatePickerButton = styled.TouchableOpacity`
   height: 46px;
   border-radius: 10px;

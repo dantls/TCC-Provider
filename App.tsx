@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import AppLoading from 'expo-app-loading';
 import {StatusBar} from 'expo-status-bar';
 
-
 import { useFonts,RobotoSlab_400Regular,
   RobotoSlab_500Medium,RobotoSlab_700Bold} from '@expo-google-fonts/roboto-slab';
 import { ThemeProvider } from 'styled-components/native';

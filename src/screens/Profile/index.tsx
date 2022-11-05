@@ -1,6 +1,6 @@
+import React, { useState, useCallback } from 'react'; 
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
-import React, { useState, useCallback } from 'react'; 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { KeyboardAvoidingView } from 'react-native';

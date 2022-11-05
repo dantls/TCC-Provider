@@ -6,6 +6,7 @@ import { AuthRoutes  } from './auth.routes';
 import { AppRoutes  } from './app.routes';
 
 import { useAuth } from '../hooks/auth';
+import { Schedules } from '@src/screens/Schedules';
 
 export function Routes(){
   const { user , loading} = useAuth();
