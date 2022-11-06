@@ -77,7 +77,7 @@ export const ServicesList = styled(FlatList as new () => FlatList<Service>)`
   padding: 16px 24px 16px;
 `;
 
-export const ServicesContainer = styled(RectButton)`
+export const ServicesContainer = styled.TouchableOpacity`
   background: #3e3b47;
   border-radius: 10px;
   padding: 20px;
