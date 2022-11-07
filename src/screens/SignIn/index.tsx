@@ -65,18 +65,17 @@ export function SignIn(){
               onPress={handleRegister}
             />
 
-            <ForgotPasswordButton>
+            {/* <ForgotPasswordButton>
               <ForgotPasswordLabel>Esqueci minha senha</ForgotPasswordLabel>
-            </ForgotPasswordButton>
+            </ForgotPasswordButton> */}
 
-            <CreateAccountButton
+            {/* <CreateAccountButton
               onPress={() => {
                 navigate('User');
               }}
             >
-              {/* <Icon name="log-in" size={20} color="#39ff14" /> */}
               <CreateAccountButtonText>Criar uma conta</CreateAccountButtonText>
-            </CreateAccountButton>
+            </CreateAccountButton> */}
           
         </Content>
       </KeyboardAvoidingView>
