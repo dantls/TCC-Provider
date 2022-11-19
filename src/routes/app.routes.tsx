@@ -2,14 +2,13 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 const { Navigator, Screen } = createStackNavigator();
-import {TabsRoutes} from './tabs.routes';
+import { TabsRoutes } from './tabs.routes';
 import { Dashboard } from '../screens/Dashboard';
-// import { Home } from '../screens/Home';
 import { AppointmentDetail } from '../screens/AppointmentDetail';
 import { ProviderDetail } from '../screens/ProviderDetail';
 import { AppointmentsCreated } from '../screens/AppointmentsCreated';
 import { SplashScreen } from '../screens/SplashScreen';
-import {Profile} from '@screens/Profile';
+import { Profile } from '@screens/Profile';
 
 export function AppRoutes(){
   return(

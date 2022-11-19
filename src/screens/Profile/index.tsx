@@ -13,9 +13,7 @@ import {
   BackButton
 } from './styles';
 
-
 import { useAuth } from '../../hooks/auth';
-
 
 export function Profile(){
 

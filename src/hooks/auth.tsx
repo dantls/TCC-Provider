@@ -18,7 +18,6 @@ interface SignInCredentials {
 }
 
 interface AuthState {
-//  token: string;
   user: User;
 }
 
@@ -40,14 +39,12 @@ const AuthProvider: React.FC = ({ children }) => {
     async function loadStorageData():Promise<void>{
       
         const [
-          // token,
           user] = await AsyncStorage.multiGet([
-            //'@Work:token',
             '@Work:provider']);
 
-        if (//token[1] && 
+        if (
           user[1]) {
-          setData({//token:token[1],
+          setData({
              user: JSON.parse(user[1])});
         }
         setLoading(false);
@@ -69,29 +66,24 @@ const AuthProvider: React.FC = ({ children }) => {
       const user = response.data;
 
       await AsyncStorage.multiSet([
-        // ['@Work:token', token],
         ['@Work:provider', JSON.stringify(user)]
       ])
   
-      // api.defaults.headers.authorization = `Bearer ${token}`;
-  
       setData({ 
-       // token, 
         user });
+      setLoading(false);
     }catch(error){
       Alert.alert('Usuário/Senha incorretos.');
-    }
-    
-
-  
+    }  
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.multiRemove([
-      // 'Work:token',
-      'Work:provider'
-    ]);
-
+    try {
+      await AsyncStorage.removeItem('@Work:provider');
+    }
+    catch(exception) {
+        console.log(exception)
+    }
     setData({} as AuthState);
   }, []);
 
@@ -99,13 +91,10 @@ const AuthProvider: React.FC = ({ children }) => {
     (user: User) => {
       localStorage.setItem('@Work:provider', JSON.stringify(user));
       setData({
-        //token: data.token,
         user,
       });
     },
-    [setData, 
-      //data.token
-    ],
+    [setData],
   );
 
   return (
